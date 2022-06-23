@@ -11,6 +11,7 @@ const observable = fromEvent(
 
 interval(500).pipe(
     take(5),
+    tap(console.log),
     reduce((acc, value) => acc + value, 0)
 ).subscribe(console.log)
 
