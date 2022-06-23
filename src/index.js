@@ -1,27 +1,21 @@
-import { from, of, fromEvent, interval } from 'rxjs';
-import { map, pluck, filter, reduce, take, scan, tap } from 'rxjs/operators'
+import { fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
 
+
+const button = document.querySelector('#btn')
 const observable = fromEvent(
-    document,
-    'keydown'
+    button,
+    'click'
 ).pipe(
-    pluck('code'),
-    filter(code => code === "Space")
+    map(() => {
+        return ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1')
+    })
 )
-
-interval(500).pipe(
-    take(5),
-    tap({
-        next(val) {
-            console.log(val)
-        }
-    }),
-    reduce((acc, value) => acc + value, 0)
-).subscribe(console.log)
 
 observable.subscribe({
     next: (value) => {
-        console.log(value)
+        value.subscribe(console.log)
     },
     complete: () => {
         console.log('of completes after iteration')
