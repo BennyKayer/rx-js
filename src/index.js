@@ -1,10 +1,11 @@
-import { from, of } from 'rxjs';
-import { map } from 'rxjs/operators'
+import { from, of, fromEvent } from 'rxjs';
+import { map, pluck } from 'rxjs/operators'
 
-const observable = of(1, 2, 3, 4, 5)
-
-const numbersWithSymbol = observable.pipe(
-    map((value) => `$${value}`)
+const observable = fromEvent(
+    document,
+    'keydown'
+).pipe(
+    pluck('code')
 )
 
 observable.subscribe({
@@ -15,7 +16,3 @@ observable.subscribe({
         console.log('of completes after iteration')
     }
 })
-
-console.log('hello');
-
-numbersWithSymbol.subscribe(console.log)
