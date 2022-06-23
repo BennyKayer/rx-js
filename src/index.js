@@ -1,5 +1,5 @@
 import { fromEvent, interval } from 'rxjs';
-import { map, mergeMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
 
 
@@ -8,12 +8,23 @@ const observable = fromEvent(
     button,
     'click'
 ).pipe(
-    mergeMap(() => {
-        // return ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1')
-        return interval(1000).pipe(
-            tap(console.log),
-            take(5)
+    switchMap(() => {
+        return ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1').pipe(
+            take(5),
+            tap({
+                complete() {
+                    console.log('inner observable complete')
+                }
+            }),
         )
+        // return interval(1000).pipe(
+        //     take(5),
+        //     tap({
+        //         complete() {
+        //             console.log('inner observable complete')
+        //         }
+        //     }),
+        // )
     }),
     
 )
