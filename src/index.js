@@ -1,11 +1,12 @@
 import { from, of, fromEvent } from 'rxjs';
-import { map, pluck } from 'rxjs/operators'
+import { map, pluck, filter } from 'rxjs/operators'
 
 const observable = fromEvent(
     document,
     'keydown'
 ).pipe(
-    pluck('code')
+    pluck('code'),
+    filter(code => code === "Space")
 )
 
 observable.subscribe({
