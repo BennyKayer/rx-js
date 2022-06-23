@@ -1,5 +1,5 @@
-import { from, of, fromEvent } from 'rxjs';
-import { map, pluck, filter, reduce } from 'rxjs/operators'
+import { from, of, fromEvent, interval } from 'rxjs';
+import { map, pluck, filter, reduce, take, scan, tap } from 'rxjs/operators'
 
 const observable = fromEvent(
     document,
@@ -9,7 +9,8 @@ const observable = fromEvent(
     filter(code => code === "Space")
 )
 
-of(1, 2, 3, 4, 5).pipe(
+interval(500).pipe(
+    take(5),
     reduce((acc, value) => acc + value, 0)
 ).subscribe(console.log)
 
