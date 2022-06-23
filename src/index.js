@@ -1,6 +1,11 @@
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
+import { map } from 'rxjs/operators'
 
-const observable = from(fetch('https://jsonplaceholder.typicode.com/todos/1'))
+const observable = of(1, 2, 3, 4, 5)
+
+const numbersWithSymbol = observable.pipe(
+    map((value) => `$${value}`)
+)
 
 observable.subscribe({
     next: (value) => {
@@ -12,3 +17,5 @@ observable.subscribe({
 })
 
 console.log('hello');
+
+numbersWithSymbol.subscribe(console.log)
